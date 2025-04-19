@@ -66,15 +66,65 @@ body {
     box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
+.task-section {
+    margin-bottom: 30px;
+    background-color: var(--card-color);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.task-toggle {
+    width: 100%;
+    padding: 15px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    transition: var(--transition);
+}
+
+.task-toggle:hover {
+    background-color: #45a049;
+}
+
+.toggle-icon {
+    width: 24px;
+    height: 24px;
+    fill: white;
+    transition: transform 0.3s ease;
+}
+
+.task-toggle.collapsed .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.task-input-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.task-input-container.expanded {
+    max-height: 500px;
+}
+
 .task-input {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-bottom: 30px;
     padding: 20px;
-    background-color: var(--card-color);
-    border-radius: 15px;
-    box-shadow: var(--shadow);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.task-input-container.expanded .task-input {
+    opacity: 1;
 }
 
 .task-input input {

@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelDeductButton = document.getElementById('cancel-deduct');
     const deductAmountInput = document.getElementById('deduct-amount');
     const resetButton = document.getElementById('reset-all');
+    const taskToggle = document.getElementById('task-toggle');
+    const taskInputContainer = document.querySelector('.task-input-container');
 
     // 사운드 요소
     const bubblePopSound = document.getElementById('bubble-pop-sound');
@@ -30,8 +32,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let state = {
         totalPoints: 0,
         tasks: [],
-        currentBubble: null
+        currentBubble: null,
+        isTaskInputExpanded: false
     };
+
+    // 태스크 입력 섹션 토글
+    taskToggle.addEventListener('click', () => {
+        state.isTaskInputExpanded = !state.isTaskInputExpanded;
+        taskToggle.classList.toggle('collapsed');
+        taskInputContainer.classList.toggle('expanded');
+        
+        if (state.isTaskInputExpanded) {
+            taskNameInput.focus();
+        }
+    });
 
     // 데이터 로드
     function loadData() {

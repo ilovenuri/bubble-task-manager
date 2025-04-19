@@ -20,10 +20,20 @@
             </div>
         </div>
 
-        <div class="task-input">
-            <input type="text" id="task-name" placeholder="태스크 이름">
-            <input type="number" id="task-points" placeholder="포인트" min="1">
-            <button id="add-task">태스크 추가</button>
+        <div class="task-section">
+            <button class="task-toggle" id="task-toggle">
+                <span>태스크 추가</span>
+                <svg class="toggle-icon" viewBox="0 0 24 24">
+                    <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+                </svg>
+            </button>
+            <div class="task-input-container">
+                <div class="task-input">
+                    <input type="text" id="task-name" placeholder="태스크 이름">
+                    <input type="number" id="task-points" placeholder="포인트" min="1">
+                    <button id="add-task">태스크 추가</button>
+                </div>
+            </div>
         </div>
 
         <div class="bubbles-container" id="bubbles-container">
