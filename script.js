@@ -116,6 +116,22 @@ document.addEventListener('DOMContentLoaded', () => {
         bubble.className = 'bubble';
         bubble.style.backgroundColor = color;
 
+        // 포인트에 따른 크기 클래스 설정
+        if (points <= 5) {
+            bubble.classList.add('small');
+        } else if (points <= 10) {
+            bubble.classList.add('medium');
+        } else if (points <= 20) {
+            bubble.classList.add('large');
+        } else {
+            bubble.classList.add('xlarge');
+        }
+
+        // 랜덤 애니메이션 선택
+        const animations = ['float1', 'float2', 'float3', 'float4'];
+        const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+        bubble.style.animation = `${randomAnimation} ${3 + Math.random() * 2}s ease-in-out infinite`;
+
         const content = document.createElement('div');
         content.className = 'bubble-content';
         content.innerHTML = `
