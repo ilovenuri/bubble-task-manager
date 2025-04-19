@@ -20,49 +20,63 @@ document.addEventListener('DOMContentLoaded', () => {
     const pointEarnSound = document.getElementById('point-earn-sound');
     const bubbleCreateSound = document.getElementById('bubble-create-sound');
 
-    let totalPoints = 0;
-    let currentBubble = null;
-    let tasks = [];
-
     // 색상 배열
     const colors = [
         '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', 
         '#FFEEAD', '#D4A5A5', '#9B59B6', '#3498DB'
     ];
 
+    // 상태 관리
+    let state = {
+        totalPoints: 0,
+        tasks: [],
+        currentBubble: null
+    };
+
     // 데이터 로드
     function loadData() {
-        const savedData = localStorage.getItem('bubbleTaskData');
-        if (savedData) {
-            const data = JSON.parse(savedData);
-            totalPoints = data.totalPoints || 0;
-            tasks = data.tasks || [];
-            totalPointsDisplay.textContent = totalPoints;
-            
-            // 저장된 태스크들 다시 생성
-            tasks.forEach(task => {
-                createBubble(task.name, task.points, task.color);
-            });
+        try {
+            const savedData = localStorage.getItem('bubbleTaskData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                state.totalPoints = data.totalPoints || 0;
+                state.tasks = data.tasks || [];
+                totalPointsDisplay.textContent = state.totalPoints;
+                
+                // 저장된 태스크들 다시 생성
+                state.tasks.forEach(task => {
+                    createBubble(task.name, task.points, task.color);
+                });
+                console.log('Data loaded successfully:', state);
+            }
+        } catch (error) {
+            console.error('Error loading data:', error);
         }
     }
 
     // 데이터 저장
     function saveData() {
-        const data = {
-            totalPoints,
-            tasks
-        };
-        localStorage.setItem('bubbleTaskData', JSON.stringify(data));
+        try {
+            const data = {
+                totalPoints: state.totalPoints,
+                tasks: state.tasks
+            };
+            localStorage.setItem('bubbleTaskData', JSON.stringify(data));
+            console.log('Data saved successfully:', data);
+        } catch (error) {
+            console.error('Error saving data:', error);
+        }
     }
 
     // 초기화
     function resetAll() {
         if (confirm('모든 데이터를 초기화하시겠습니까?')) {
-            totalPoints = 0;
-            tasks = [];
-            totalPointsDisplay.textContent = totalPoints;
+            state.totalPoints = 0;
+            state.tasks = [];
+            totalPointsDisplay.textContent = state.totalPoints;
             bubblesContainer.innerHTML = '';
             localStorage.removeItem('bubbleTaskData');
+            console.log('Data reset successfully');
         }
     }
 
@@ -74,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (taskName && points > 0) {
             const color = colors[Math.floor(Math.random() * colors.length)];
             createBubble(taskName, points, color);
-            tasks.push({ name: taskName, points, color });
+            state.tasks.push({ name: taskName, points, color });
             taskNameInput.value = '';
             taskPointsInput.value = '';
             bubbleCreateSound.play();
@@ -100,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 버블 클릭 이벤트
         bubble.addEventListener('click', () => {
-            currentBubble = bubble;
+            state.currentBubble = bubble;
             modalTaskName.textContent = taskName;
             confirmModal.style.display = 'block';
         });
@@ -108,23 +122,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 버블 터트리기
     confirmPopButton.addEventListener('click', () => {
-        if (currentBubble) {
-            const points = parseInt(currentBubble.querySelector('.bubble-content div:last-child').textContent);
-            const taskName = currentBubble.querySelector('.bubble-content div:first-child').textContent;
+        if (state.currentBubble) {
+            const points = parseInt(state.currentBubble.querySelector('.bubble-content div:last-child').textContent);
+            const taskName = state.currentBubble.querySelector('.bubble-content div:first-child').textContent;
             
-            currentBubble.classList.add('pop-animation');
+            state.currentBubble.classList.add('pop-animation');
             bubblePopSound.play();
             
             setTimeout(() => {
-                currentBubble.remove();
-                totalPoints += points;
-                totalPointsDisplay.textContent = totalPoints;
+                state.currentBubble.remove();
+                state.totalPoints += points;
+                totalPointsDisplay.textContent = state.totalPoints;
                 pointEarnSound.play();
                 confirmModal.style.display = 'none';
-                currentBubble = null;
+                state.currentBubble = null;
 
                 // 완료된 태스크 제거
-                tasks = tasks.filter(task => task.name !== taskName);
+                state.tasks = state.tasks.filter(task => task.name !== taskName);
                 saveData();
             }, 500);
         }
@@ -133,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 취소 버튼
     cancelPopButton.addEventListener('click', () => {
         confirmModal.style.display = 'none';
-        currentBubble = null;
+        state.currentBubble = null;
     });
 
     // 포인트 차감 모달 열기
@@ -144,9 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 포인트 차감 확인
     confirmDeductButton.addEventListener('click', () => {
         const amount = parseInt(deductAmountInput.value);
-        if (amount > 0 && amount <= totalPoints) {
-            totalPoints -= amount;
-            totalPointsDisplay.textContent = totalPoints;
+        if (amount > 0 && amount <= state.totalPoints) {
+            state.totalPoints -= amount;
+            totalPointsDisplay.textContent = state.totalPoints;
             deductAmountInput.value = '';
             pointsModal.style.display = 'none';
             saveData();
@@ -166,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('click', (e) => {
         if (e.target === confirmModal) {
             confirmModal.style.display = 'none';
-            currentBubble = null;
+            state.currentBubble = null;
         }
         if (e.target === pointsModal) {
             pointsModal.style.display = 'none';
@@ -175,4 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 초기 데이터 로드
     loadData();
+
+    // 디버깅을 위한 상태 로깅
+    console.log('Initial state:', state);
 }); 
