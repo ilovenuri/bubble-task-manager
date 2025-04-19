@@ -179,7 +179,6 @@ body {
     cursor: pointer;
     position: relative;
     transition: var(--transition);
-    max-width: 160px;
     margin: 0 auto;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     overflow: hidden;
@@ -187,19 +186,23 @@ body {
 
 /* 포인트에 따른 크기 클래스 */
 .bubble.small {
-    max-width: 120px;
+    max-width: 80px;
+    font-size: 0.8em;
 }
 
 .bubble.medium {
-    max-width: 160px;
+    max-width: 120px;
+    font-size: 1em;
 }
 
 .bubble.large {
-    max-width: 200px;
+    max-width: 180px;
+    font-size: 1.2em;
 }
 
 .bubble.xlarge {
     max-width: 240px;
+    font-size: 1.4em;
 }
 
 /* 랜덤 플로팅 애니메이션 */
