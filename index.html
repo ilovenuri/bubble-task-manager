@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>버블 태스크 매니저</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>버블 태스크 매니저</h1>
+            <div class="points-display">
+                <span>포인트: </span>
+                <span id="total-points">0</span>
+                <button id="deduct-points">포인트 사용</button>
+            </div>
+        </div>
+
+        <div class="task-input">
+            <input type="text" id="task-name" placeholder="태스크 이름">
+            <input type="number" id="task-points" placeholder="포인트" min="1">
+            <button id="add-task">태스크 추가</button>
+        </div>
+
+        <div class="bubbles-container" id="bubbles-container">
+            <!-- 버블들이 여기에 동적으로 추가됩니다 -->
+        </div>
+
+        <div class="modal" id="confirm-modal">
+            <div class="modal-content">
+                <h2 id="modal-task-name"></h2>
+                <p>SHOULD I POP IT?</p>
+                <button id="confirm-pop">OK</button>
+                <button id="cancel-pop">취소</button>
+            </div>
+        </div>
+
+        <div class="modal" id="points-modal">
+            <div class="modal-content">
+                <h2>포인트 사용</h2>
+                <input type="number" id="deduct-amount" placeholder="사용할 포인트" min="1">
+                <button id="confirm-deduct">확인</button>
+                <button id="cancel-deduct">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bubble-pop-sound" src="sounds/pop.mp3"></audio>
+    <audio id="point-earn-sound" src="sounds/earn.mp3"></audio>
+    <audio id="bubble-create-sound" src="sounds/create.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html> 
